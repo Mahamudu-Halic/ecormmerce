@@ -15,6 +15,7 @@ const AvailableColorItem = ({
         selectedColor === color ? "border-black" : "border-[#b6b8b8]"
       } rounded-lg p-1`}
       onClick={() => changeSelectedColor(color)}
+      aria-label={color}
     >
       <span
         className={"w-7 h-7 rounded-lg block"}

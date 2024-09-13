@@ -5,12 +5,7 @@ import { BriefcaseBusiness, CircleUserRound, Menu, Search } from "lucide-react";
 import MobileSidebar from "./mobile-sidebar";
 import { useState } from "react";
 
-const Navbar = () => {
-  const [showSidebar, setShowSidebar] = useState<boolean>(false);
-
-  const toggleSidebar = () => {
-    setShowSidebar((prev) => !prev);
-  };
+const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
   return (
     <div className="flex justify-between items-center p-5">
       <div className="flex items-center gap-5">
@@ -46,10 +41,12 @@ const Navbar = () => {
           <CircleUserRound />
           Login
         </button>
-        <Menu className="md:hidden cursor-pointer" onClick={toggleSidebar} />
+        <button onClick={toggleSidebar} aria-label="menu">
+          <Menu className="md:hidden cursor-pointer" />
+        </button>
       </div>
 
-      <MobileSidebar showSidebar={showSidebar} toggleSidebar={toggleSidebar} />
+      {/* <MobileSidebar showSidebar={showSidebar} toggleSidebar={toggleSidebar} /> */}
     </div>
   );
 };

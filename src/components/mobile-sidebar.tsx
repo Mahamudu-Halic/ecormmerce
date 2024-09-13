@@ -22,7 +22,9 @@ const MobileSidebar = ({
           showSidebar ? "right-0" : "right-[-800px]"
         } transition-all h-full w-[70%] z-[10000] bg-white flex flex-col p-10 pl-5`}
       >
-        <X className="cursor-pointer ml-auto mb-5" onClick={toggleSidebar} />
+        <button className="ml-auto mb-5" aria-label="close">
+          <X onClick={toggleSidebar} />
+        </button>
         {NavItems.map(
           (item: { name: string; url: string; active?: boolean }) => {
             return (
