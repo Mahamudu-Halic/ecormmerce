@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { ItemInfo, Sizes, Colors } from "../../constant"; // Ensure ItemInfo, Sizes, and Colors are correctly imported
+import { ItemInfo, Sizes, Colors } from "../../constant";
 import ItemDetails from "@/components/item-details";
 import SizeList from "@/components/size-list";
 import AvailableColorList from "@/components/available-color-list";

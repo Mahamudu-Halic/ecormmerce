@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom"; // to access additional matchers like `toBeInTheDocument`
+import "@testing-library/jest-dom"; 
 import Navbar from "@/components/navbar";
 import MobileSidebar from "@/components/mobile-sidebar";
 
