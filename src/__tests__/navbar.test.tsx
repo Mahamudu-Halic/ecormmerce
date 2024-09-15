@@ -15,17 +15,14 @@ describe("Navbar Component", () => {
   it("renders the Navbar elements correctly", () => {
     render(<Navbar toggleSidebar={() => {}} />);
 
-    // Check for the brand name
     const brandName = screen.getByText("Jolt");
     expect(brandName).toBeInTheDocument();
 
-    // Get all elements with the text "Home" and select the first one
     const homeLink = screen.getByText("Home");
 
     expect(homeLink).toBeInTheDocument();
     expect(homeLink).toHaveClass("font-bold");
 
-    // Check for other nav items
     const aboutLink = screen.getByText("About");
 
     expect(aboutLink).toBeInTheDocument();
