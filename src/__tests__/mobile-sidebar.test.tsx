@@ -11,6 +11,8 @@ jest.mock("../../constant", () => ({
 }));
 
 describe("Mobile sidebar Component", () => {
+  const toggleSidebar = jest.fn();
+
   it("renders the sidebar elements correctly", () => {
     render(<MobileSidebar showSidebar={true} toggleSidebar={() => {}} />);
 
@@ -27,20 +29,21 @@ describe("Mobile sidebar Component", () => {
 
     expect(contactLink).toBeInTheDocument();
   });
-  
-  it("hides sidebar when clicked", () => {
-    const toggleSidebar = jest.fn();
 
-    render(
-      <MobileSidebar
-        showSidebar={true}
-        toggleSidebar={toggleSidebar}
-      />
-    );
+  it("hides sidebar when overlay is clicked clicked", () => {
+    render(<MobileSidebar showSidebar={true} toggleSidebar={toggleSidebar} />);
+
+    const overlay = screen.getByLabelText("overlay");
+    fireEvent.click(overlay);
+
+    expect(toggleSidebar).toHaveBeenCalledTimes(1);
+  });
+  it("hides sidebar when X is clicked clicked", () => {
+    render(<MobileSidebar showSidebar={true} toggleSidebar={toggleSidebar} />);
 
     const closeButton = screen.getByRole("button", { name: /close/i });
     fireEvent.click(closeButton);
 
-    expect(toggleSidebar).toHaveBeenCalledTimes(1);
+    expect(toggleSidebar).toHaveBeenCalledTimes(2);
   });
 });

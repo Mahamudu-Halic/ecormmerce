@@ -12,6 +12,7 @@ const MobileSidebar = ({
   return (
     <>
       <div
+      aria-label="overlay"
         className={`md:hidden fixed top-0 ${
           showSidebar ? "right-0" : "right-[-800px]"
         } transition-all h-full w-full z-[1000] bg-[#0000009d]`}
@@ -22,8 +23,8 @@ const MobileSidebar = ({
           showSidebar ? "right-0" : "right-[-800px]"
         } transition-all h-full w-[70%] z-[10000] bg-white flex flex-col p-10 pl-5`}
       >
-        <button className="ml-auto mb-5" aria-label="close">
-          <X onClick={toggleSidebar} />
+        <button className="ml-auto mb-5" aria-label="close" onClick={toggleSidebar}>
+          <X />
         </button>
         {NavItems.map(
           (item: { name: string; url: string; active?: boolean }) => {
