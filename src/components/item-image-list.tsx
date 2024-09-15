@@ -14,7 +14,7 @@ const ItemImageList = () => {
               fill
               src={"/assets/img05 1.png"}
               alt="item"
-              className="object-center"
+              className="object-center object-cover"
             />
           </div>
         );
