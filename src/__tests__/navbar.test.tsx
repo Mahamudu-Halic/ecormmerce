@@ -1,48 +1,47 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom"; 
 import Navbar from "@/components/navbar";
-import MobileSidebar from "@/components/mobile-sidebar";
 
-jest.mock("../../constant", () => ({
-  NavItems: [
-    { name: "Home", url: "/", active: true },
-    { name: "About", url: "/about", active: false },
-    { name: "Contact", url: "/contact", active: false },
-  ],
-}));
 
-describe("Navbar Component", () => {
-  it("renders the Navbar elements correctly", () => {
-    render(<Navbar toggleSidebar={() => {}} />);
+describe("Navbar component", () => {
+  test("should render correctly", () => {
+    render(<Navbar toggleSidebar={() => {}}/>)
 
-    const brandName = screen.getByText("Jolt");
-    expect(brandName).toBeInTheDocument();
+    const brandName = screen.getByText(/jolt/i)
+    expect(brandName).toBeInTheDocument()
 
-    const homeLink = screen.getByText("Home");
+    const categoriesLink = screen.getByText(/categories/i);
+    expect(categoriesLink).toBeInTheDocument();
 
-    expect(homeLink).toBeInTheDocument();
-    expect(homeLink).toHaveClass("font-bold");
+    const collectionLink = screen.getByText(/collection/i);
+    expect(collectionLink).toBeInTheDocument();
 
-    const aboutLink = screen.getByText("About");
+    const storeLink = screen.getByText("store");
+    expect(storeLink).toBeInTheDocument();
 
-    expect(aboutLink).toBeInTheDocument();
+    const findStoreLink = screen.getByText(/find/i);
+    expect(findStoreLink).toBeInTheDocument();
 
-    const contactLink = screen.getByText("Contact");
+    const searchButton = screen.getByRole("button", {name: /search/i});
+    expect(searchButton).toBeInTheDocument();
 
-    expect(contactLink).toBeInTheDocument();
-  });
+    const cartButton = screen.getByRole("button", {name: /cart/i});
+    expect(cartButton).toBeInTheDocument();
 
-  it("displays sidebar when the menu icon is clicked", () => {
+    const loginButton = screen.getByText(/login/i);
+    expect(loginButton).toBeInTheDocument();
+
+    const menuButton = screen.getByRole("button", {name: /menu/i});
+    expect(menuButton).toBeInTheDocument();
+  })
+
+  test("should display the sidebar when clicked", () => {
     const toggleSidebar = jest.fn();
-    render(
-      <Navbar
-        toggleSidebar={toggleSidebar}
-      />
-    );
+    render(<Navbar toggleSidebar={toggleSidebar} />)
 
-    const menuButton = screen.getByRole("button", { name: /menu/i });
+    const menuButton = screen.getByRole("button", {name: /menu/i});
     fireEvent.click(menuButton);
 
-    expect(toggleSidebar).toHaveBeenCalledTimes(1);
-  });
-});
+    expect(toggleSidebar).toHaveBeenCalled();
+  })
+})

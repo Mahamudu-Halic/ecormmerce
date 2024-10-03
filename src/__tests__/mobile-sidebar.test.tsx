@@ -1,49 +1,107 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import MobileSidebar from "@/components/mobile-sidebar";
+import Navbar from "@/components/navbar";
 
-jest.mock("../../constant", () => ({
-  NavItems: [
-    { name: "Home", url: "/", active: true },
-    { name: "About", url: "/about", active: false },
-    { name: "Contact", url: "/contact", active: false },
-  ],
-}));
+describe("Mobile component", () => {
+  test("should render correctly", () => {
+    render(<MobileSidebar showSidebar={false} toggleSidebar={() => {}} />);
 
-describe("Mobile sidebar Component", () => {
-  const toggleSidebar = jest.fn();
+    const categoriesLink = screen.getByText(/categories/i);
+    expect(categoriesLink).toBeInTheDocument();
 
-  it("renders the sidebar elements correctly", () => {
-    render(<MobileSidebar showSidebar={true} toggleSidebar={() => {}} />);
+    const collectionLink = screen.getByText(/collection/i);
+    expect(collectionLink).toBeInTheDocument();
 
-    const homeLink = screen.getByText("Home");
+    const storeLink = screen.getByText("store");
+    expect(storeLink).toBeInTheDocument();
 
-    expect(homeLink).toBeInTheDocument();
-    expect(homeLink).toHaveClass("font-bold");
+    const findStoreLink = screen.getByText(/find/i);
+    expect(findStoreLink).toBeInTheDocument();
 
-    const aboutLink = screen.getByText("About");
+    const loginButton = screen.getByText(/login/i);
+    expect(loginButton).toBeInTheDocument();
 
-    expect(aboutLink).toBeInTheDocument();
-
-    const contactLink = screen.getByText("Contact");
-
-    expect(contactLink).toBeInTheDocument();
-  });
-
-  it("hides sidebar when overlay is clicked clicked", () => {
-    render(<MobileSidebar showSidebar={true} toggleSidebar={toggleSidebar} />);
+    const closeButton = screen.getByLabelText(/close/i);
+    expect(closeButton).toBeInTheDocument();
 
     const overlay = screen.getByLabelText("overlay");
-    fireEvent.click(overlay);
+    expect(overlay).toBeInTheDocument();
 
-    expect(toggleSidebar).toHaveBeenCalledTimes(1);
+    const sidebar = screen.getByLabelText("sidebar");
+    expect(sidebar).toBeInTheDocument();
   });
-  it("hides sidebar when X is clicked clicked", () => {
+
+  test("should be hidden initially", () => {
+    render(<MobileSidebar showSidebar={false} toggleSidebar={() => {}} />);
+
+    const overlay = screen.getByLabelText("overlay");
+    expect(overlay).toHaveClass("right-[-800px]");
+
+    const sidebar = screen.getByLabelText("sidebar");
+    expect(sidebar).toHaveClass("right-[-800px]");
+  });
+
+  test("should close sidebar when close button is clicked", () => {
+    const toggleSidebar = jest.fn();
+
     render(<MobileSidebar showSidebar={true} toggleSidebar={toggleSidebar} />);
 
-    const closeButton = screen.getByRole("button", { name: /close/i });
-    fireEvent.click(closeButton);
+    const closeButton = screen.getByLabelText(/close/i)
+    const sidebar = screen.getByLabelText(/sidebar/i);
 
-    expect(toggleSidebar).toHaveBeenCalledTimes(2);
-  });
+    expect(sidebar).toHaveClass("right-0")
+    fireEvent.click(closeButton)
+    
+    expect(toggleSidebar).toHaveBeenCalled()
+  })
+
+  test("should close sidebar when overlay is clicked", () => {
+    const toggleSidebar = jest.fn();
+
+    render(<MobileSidebar showSidebar={true} toggleSidebar={toggleSidebar} />);
+
+    const overlay = screen.getByLabelText(/overlay/i)
+    const sidebar = screen.getByLabelText(/sidebar/i);
+
+    expect(sidebar).toHaveClass("right-0")
+    fireEvent.click(overlay)
+    
+    expect(toggleSidebar).toHaveBeenCalled()
+  })
+
+  // test("testing", () => {
+  //   const toggleSidebar = jest.fn();
+
+  //   render(
+  //     <div>
+  //       <Navbar toggleSidebar={toggleSidebar}/>
+  //         <MobileSidebar showSidebar={false} toggleSidebar={toggleSidebar} />
+  //     </div>
+  //   )
+
+  //   const menuButton = screen.getByRole("button", {name: /menu/i});
+  //   expect(menuButton).toBeInTheDocument()
+
+  //   const closeButton = screen.getByLabelText(/close/i);
+  //   expect(closeButton).toBeInTheDocument();
+
+  //   const overlay = screen.getByLabelText("overlay");
+  //   expect(overlay).toBeInTheDocument();
+
+  //   const sidebar = screen.getByLabelText("sidebar");
+  //   expect(sidebar).toBeInTheDocument();
+
+  //   fireEvent.click(menuButton);
+  //   expect(toggleSidebar).toHaveBeenCalledTimes(1);
+
+  //   fireEvent.click(closeButton);
+  //   expect(toggleSidebar).toHaveBeenCalledTimes(2)
+
+  //   fireEvent.click(menuButton);
+  //   expect(toggleSidebar).toHaveBeenCalledTimes(3)
+
+  //   fireEvent.click(overlay);
+  //   expect(toggleSidebar).toHaveBeenCalledTimes(4)
+  // })
 });

@@ -27,7 +27,7 @@ const ItemDetails = () => {
           {Array.from({ length: ItemInfo?.stars }).map((i, index) => {
             return (
               <Fragment key={index}>
-                <Star size={15} color="black" fill="black" />
+                <Star aria-label={`star ${index}`} size={15} color="black" fill="black" />
               </Fragment>
             );
           })}

@@ -37,10 +37,10 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
           <BriefcaseBusiness />
           <p className="hidden md:block">Cart</p>
         </button>
-        <button className="md:flex items-center gap-3 font-bold hidden">
+        <Link href={"/auth/login"} className="md:flex items-center gap-3 font-bold hidden">
           <CircleUserRound />
           Login
-        </button>
+        </Link>
         <button onClick={toggleSidebar} aria-label="menu">
           <Menu className="md:hidden cursor-pointer" />
         </button>

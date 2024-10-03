@@ -22,6 +22,7 @@ const MobileSidebar = ({
         className={`md:hidden fixed top-0 ${
           showSidebar ? "right-0" : "right-[-800px]"
         } transition-all h-full w-[70%] z-[10000] bg-white flex flex-col p-10 pl-5`}
+        aria-label="sidebar"
       >
         <button className="ml-auto mb-5" aria-label="close" onClick={toggleSidebar}>
           <X />

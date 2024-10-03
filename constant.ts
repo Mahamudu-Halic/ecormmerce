@@ -55,13 +55,13 @@ export const RecommendedItemsList = [
     image: "/assets/img05 1.png",
   },
   {
-    name: "Adidas",
+    name: "Adidas1",
     price: 36,
     favorite: false,
     image: "/assets/img05 1.png",
   },
   {
-    name: "Adidas",
+    name: "Adidas2",
     price: 56,
     favorite: false,
     image: "/assets/img05 1.png",

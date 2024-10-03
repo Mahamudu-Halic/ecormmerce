@@ -4,90 +4,92 @@ import "@testing-library/jest-dom";
 import SizeList from "@/components/size-list";
 import AvailableColorList from "@/components/available-color-list";
 import SizeItem from "@/components/size-item";
+import { Colors, ItemInfo, Sizes } from "../../constant";
 
-jest.mock("../../constant", () => ({
-  ItemInfo: {
-    category: "Category",
-    name: "Product Name",
-    old_price: 100,
-    current_price: 90,
-    discount: 10,
-    stars: 4,
-    reviews: 100,
-    description: "Lorem ipsum dolor sit amet.",
-  },
-  Sizes: ["S", "M", "L", "XL", "XXL"],
-  Colors: ["red", "blue", "green"],
-}));
 describe("ItemDetails Component", () => {
-  it("renders item details correctly", () => {
+  test("should render correctly", () => {
     render(<ItemDetails />);
 
-    expect(screen.getByText(/cate/i)).toBeInTheDocument();
-    expect(screen.getByText(/product/i)).toBeInTheDocument();
-    expect(screen.getByText(/100.00/i)).toBeInTheDocument();
-    expect(screen.getByText(/90.00/i)).toBeInTheDocument();
-    expect(screen.getByText(/10%/i)).toBeInTheDocument();
-    expect(screen.getByText(/4/i)).toBeInTheDocument();
-    expect(screen.getByText(/100\ reviews/i)).toBeInTheDocument();
-    expect(screen.getByText(/lorem/i)).toBeInTheDocument();
+    const category = screen.getByText(ItemInfo.category);
+    expect(category).toBeInTheDocument();
+
+    const name = screen.getByText(ItemInfo.name);
+    expect(name).toBeInTheDocument();
+
+    const oldPrice = screen.getByText(`$${ItemInfo.old_price}.00`);
+    expect(oldPrice).toBeInTheDocument();
+
+    const currentPrice = screen.getByText(`$${ItemInfo.current_price}.00`);
+    expect(currentPrice).toBeInTheDocument();
+
+    const discount = screen.getByText(ItemInfo.discount, { exact: false });
+    expect(discount).toBeInTheDocument();
+
+    const stars = screen.getByText(ItemInfo.stars, { exact: false });
+    expect(stars).toBeInTheDocument();
+
+    Array.from({ length: ItemInfo?.stars }).forEach((i, index) => {
+      const star = screen.getByLabelText(`star ${index}`);
+      expect(star).toBeInTheDocument();
+    });
+
+    const reviews = screen.getByText(`${ItemInfo.reviews} Reviews`);
+    expect(reviews).toBeInTheDocument();
+
+    Colors.forEach((color) => {
+      const colorButton = screen.getByRole("button", { name: color });
+      expect(colorButton).toBeInTheDocument();
+    });
+
+    Sizes.forEach((size) => {
+      const sizeButton = screen.getByRole("button", { name: size });
+      expect(sizeButton).toBeInTheDocument();
+    });
   });
 
-  it("renders size options", () => {
-    render(<SizeList />);
-
-    expect(screen.getByText("M")).toBeInTheDocument();
-    expect(screen.getByText("S")).toBeInTheDocument();
-    expect(screen.getByText("XXL")).toBeInTheDocument();
-    expect(screen.getByText("L")).toBeInTheDocument();
-    expect(screen.getByText("XL")).toBeInTheDocument();
-  });
-
-  it("highlights the initially selected size", () => {
-    render(<SizeList />);
-
-    const selectedButton = screen.getByText("S");
-    expect(selectedButton).toHaveClass("border-black bg-black text-white");
-  });
-
-  it("changes the selected size when clicked", () => {
-    render(<SizeList />);
-
-    const newSizeButton = screen.getByText("M");
-    fireEvent.click(newSizeButton);
-
-    expect(newSizeButton).toHaveClass("border-black bg-black text-white");
-
-    const previousSizeButton = screen.getByText("S");
-    expect(previousSizeButton).not.toHaveClass(
-      "border-black bg-black text-white"
-    );
-  });
-
-  it("renders color options", () => {
+  test("should render color list correctly", () => {
     render(<AvailableColorList />);
 
-    expect(screen.getByLabelText(/red/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/blue/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/green/i)).toBeInTheDocument();
+    let selectedColor = Colors[0];
+
+    Colors.forEach((color) => {
+      const colorButton = screen.getByRole("button", { name: color });
+      if (color !== selectedColor) {
+        expect(colorButton).not.toHaveClass("border-black");
+
+        fireEvent.click(colorButton);
+        expect(colorButton).toHaveClass("border-black");
+        selectedColor = color;
+      } else {
+        expect(colorButton).toHaveClass("border-black");
+
+        fireEvent.click(colorButton);
+        expect(colorButton).toHaveClass("border-black");
+      }
+    });
   });
 
-  it("highlight the initially selected color", () => {
-    render(<AvailableColorList />);
+  test("should render size list correctly", () => {
+    render(<SizeList />);
 
-    const selectedButton = screen.getByLabelText(/red/i);
-    expect(selectedButton).toHaveClass("border-black");
-  })
+    let selectedSize = Sizes[0];
 
-  it("chnages selected color when clicked", () => {
-    render(<AvailableColorList />);
+    Sizes.forEach((size) => {
+      const sizeButton = screen.getByRole("button", { name: size });
 
-    const newColorButton = screen.getByLabelText(/blue/i);
-    fireEvent.click(newColorButton);
+      if(selectedSize === size) {
+        expect(sizeButton).toHaveClass("border-black");
 
-    expect(newColorButton).toHaveClass("border-black");
+        fireEvent.click(sizeButton);
+        expect(sizeButton).toHaveClass("border-black");
+        selectedSize = size;
+      }else{
+        expect(sizeButton).not.toHaveClass("border-black");
 
-    const previousColorButton = screen.getByLabelText(/red/i);
-    expect(previousColorButton).not.toHaveClass("border-black");
-  })
+        fireEvent.click(sizeButton);
+        expect(sizeButton).toHaveClass("border-black");
+        selectedSize = size;
+      }
+    });
+  });
 });
