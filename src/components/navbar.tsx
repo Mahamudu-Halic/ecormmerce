@@ -3,9 +3,10 @@ import { NavItems } from "../../constant";
 import Link from "next/link";
 import { BriefcaseBusiness, CircleUserRound, Menu, Search } from "lucide-react";
 import MobileSidebar from "./mobile-sidebar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
+const Navbar = ({ toggleSidebar, cartItems }: { toggleSidebar: () => void, cartItems: [] }) => {
+
   return (
     <div className="flex justify-between items-center p-5">
       <div className="flex items-center gap-5">
@@ -36,8 +37,12 @@ const Navbar = ({ toggleSidebar }: { toggleSidebar: () => void }) => {
         <button className="flex items-center gap-3 font-bold">
           <BriefcaseBusiness />
           <p className="hidden md:block">Cart</p>
+          <p aria-label="cartItem">{cartItems.length}</p>
         </button>
-        <Link href={"/auth/login"} className="md:flex items-center gap-3 font-bold hidden">
+        <Link
+          href={"/auth/login"}
+          className="md:flex items-center gap-3 font-bold hidden"
+        >
           <CircleUserRound />
           Login
         </Link>

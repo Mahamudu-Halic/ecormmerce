@@ -1,10 +1,26 @@
-import React, { Fragment } from "react";
+"use client"
+import React, { Fragment, useState } from "react";
 import { ItemInfo } from "../../constant";
 import { Star } from "lucide-react";
 import AvailableColorList from "./available-color-list";
 import SizeList from "./size-list";
 
-const ItemDetails = () => {
+const ItemDetails = ({
+  setCartItems,
+  cartItems,
+}: {
+  setCartItems: (value: any) => void;
+  cartItems: [];
+}) => {
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
+  const addToCart = () => {
+    const newItem = { ...ItemInfo, size, color };
+
+    const items = [...cartItems, newItem];
+    sessionStorage.setItem("items", JSON.stringify(items));
+    setCartItems(items);
+  };
   return (
     <div className="flex-1 flex flex-col gap-3">
       <h4 className="text-sm text-[#b8b6b6]">{ItemInfo?.category}</h4>
@@ -27,7 +43,12 @@ const ItemDetails = () => {
           {Array.from({ length: ItemInfo?.stars }).map((i, index) => {
             return (
               <Fragment key={index}>
-                <Star aria-label={`star ${index}`} size={15} color="black" fill="black" />
+                <Star
+                  aria-label={`star ${index}`}
+                  size={15}
+                  color="black"
+                  fill="black"
+                />
               </Fragment>
             );
           })}
@@ -52,15 +73,19 @@ const ItemDetails = () => {
 
       <div>
         <h3 className="text-black mb-3">Available Color</h3>
-        <AvailableColorList />
+        <AvailableColorList color={setColor}/>
       </div>
       <div>
         <h3 className="text-black mb-3">Size</h3>
-        <SizeList />
+        <SizeList size={setSize}/>
       </div>
 
       <div className="flex gap-3 w-full">
-        <button className="md:text-base text-lg rounded-3xl w-full p-2 bg-[#f2f2f2] text-[#b8b6b6] hover:bg-black hover:text-white transition-all">
+        <button
+          onClick={addToCart}
+          className="md:text-base text-lg rounded-3xl w-full p-2 bg-[#f2f2f2] text-[#b8b6b6] hover:bg-black hover:text-white transition-all"
+          aria-label="add-to-cart"
+        >
           Add To Cart
         </button>
         <button className="md:text-base text-lg rounded-3xl w-full p-2 bg-black text-white hover:bg-[#f2f2f2] hover:text-black transition-all">

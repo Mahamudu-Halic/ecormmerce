@@ -4,8 +4,9 @@ import Navbar from "@/components/navbar";
 
 
 describe("Navbar component", () => {
+  const cartItems: [] = [];
   test("should render correctly", () => {
-    render(<Navbar toggleSidebar={() => {}}/>)
+    render(<Navbar toggleSidebar={() => {}} cartItems={cartItems}/>)
 
     const brandName = screen.getByText(/jolt/i)
     expect(brandName).toBeInTheDocument()
@@ -37,7 +38,7 @@ describe("Navbar component", () => {
 
   test("should display the sidebar when clicked", () => {
     const toggleSidebar = jest.fn();
-    render(<Navbar toggleSidebar={toggleSidebar} />)
+    render(<Navbar toggleSidebar={toggleSidebar} cartItems={cartItems}/>)
 
     const menuButton = screen.getByRole("button", {name: /menu/i});
     fireEvent.click(menuButton);

@@ -8,7 +8,9 @@ import { Colors, ItemInfo, Sizes } from "../../constant";
 
 describe("ItemDetails Component", () => {
   test("should render correctly", () => {
-    render(<ItemDetails />);
+    const setCartItems = jest.fn();
+    const cartItems: [] = [];
+    render(<ItemDetails setCartItems={setCartItems} cartItems={cartItems} />);
 
     const category = screen.getByText(ItemInfo.category);
     expect(category).toBeInTheDocument();
@@ -48,7 +50,7 @@ describe("ItemDetails Component", () => {
   });
 
   test("should render color list correctly", () => {
-    render(<AvailableColorList />);
+    render(<AvailableColorList color={jest.fn}/>);
 
     let selectedColor = Colors[0];
 
@@ -70,20 +72,20 @@ describe("ItemDetails Component", () => {
   });
 
   test("should render size list correctly", () => {
-    render(<SizeList />);
+    render(<SizeList size={jest.fn}/>);
 
     let selectedSize = Sizes[0];
 
     Sizes.forEach((size) => {
       const sizeButton = screen.getByRole("button", { name: size });
 
-      if(selectedSize === size) {
+      if (selectedSize === size) {
         expect(sizeButton).toHaveClass("border-black");
 
         fireEvent.click(sizeButton);
         expect(sizeButton).toHaveClass("border-black");
         selectedSize = size;
-      }else{
+      } else {
         expect(sizeButton).not.toHaveClass("border-black");
 
         fireEvent.click(sizeButton);
