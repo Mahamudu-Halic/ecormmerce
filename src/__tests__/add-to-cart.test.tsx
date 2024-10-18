@@ -18,18 +18,22 @@ describe("Add item to cart", () => {
     render(<ItemDetails setCartItems={jest.fn} cartItems={cartItems} />);
 
     const addToCartBtn = screen.getByRole("button", { name: /add-to-cart/i });
+    const checkoutBtn = screen.getByRole("button", { name: /checkout/i });
+
     fireEvent.click(addToCartBtn);
     expect(addToCartBtn).toBeDisabled();
+    expect(checkoutBtn).toBeDisabled();
   });
 
   test("should render adding to cart", () => {
     render(<ItemDetails setCartItems={jest.fn} cartItems={cartItems} />);
 
     const addToCartBtn = screen.getByRole("button", { name: /add-to-cart/i });
+
     expect(addToCartBtn).toHaveTextContent(/add to cart/i);
+
     fireEvent.click(addToCartBtn);
 
-    expect(addToCartBtn).toBeDisabled();
     expect(addToCartBtn).toHaveTextContent(/adding to cart/i);
   });
 
@@ -37,17 +41,19 @@ describe("Add item to cart", () => {
     render(<ItemDetails setCartItems={jest.fn} cartItems={cartItems} />);
 
     const addToCartBtn = screen.getByRole("button", { name: /add-to-cart/i });
+    const checkoutBtn = screen.getByRole("button", { name: /checkout/i });
+
     expect(addToCartBtn).toHaveTextContent(/add to cart/i);
     fireEvent.click(addToCartBtn);
 
     expect(addToCartBtn).toBeDisabled();
-    expect(addToCartBtn).toHaveTextContent(/adding to cart/i);
+    expect(checkoutBtn).toBeDisabled();
 
-    // await waitFor(() => expect(addToCartBtn).not.toHaveTextContent(/adding to cart/i))
+    // await waitFor(() => expect(addToCartBtn).not.toBeDisabled())
 
     setTimeout(() => {
-      expect(addToCartBtn).toHaveTextContent("Add to cart");
       expect(addToCartBtn).not.toBeDisabled();
+      expect(checkoutBtn).not.toBeDisabled();
     }, 3000);
   });
 

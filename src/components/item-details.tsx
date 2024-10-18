@@ -94,7 +94,7 @@ const ItemDetails = ({
         >
           {adding ? "Adding to cart..." : "Add To Cart"}
         </button>
-        <button disabled={adding} className="md:text-base text-lg rounded-3xl w-full p-2 bg-black text-white hover:bg-[#f2f2f2] hover:text-black transition-all">
+        <button aria-label="checkout" disabled={adding} className="md:text-base text-lg rounded-3xl w-full p-2 bg-black text-white hover:bg-[#f2f2f2] hover:text-black transition-all">
           Checkout Now
         </button>
       </div>
