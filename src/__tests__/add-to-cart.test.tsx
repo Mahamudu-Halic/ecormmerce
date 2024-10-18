@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Home from "@/app/page";
 import Navbar from "@/components/navbar";
@@ -14,17 +14,54 @@ describe("Add item to cart", () => {
     expect(cartItem).toEqual("0");
   });
 
-  test("should increment cartItem by 1 when button is clicked", () => {
-    render(<Home />)
+  test("should disable button when adding to cart", () => {
+    render(<ItemDetails setCartItems={jest.fn} cartItems={cartItems} />);
 
-    const cartItem1 = screen.getByLabelText("cartItem").textContent;
-    expect(cartItem1).toEqual("0");
+    const addToCartBtn = screen.getByRole("button", { name: /add-to-cart/i });
+    fireEvent.click(addToCartBtn);
+    expect(addToCartBtn).toBeDisabled();
+  });
 
-    const addToCartBtn = screen.getByRole("button", { name: /add/i });
+  test("should render adding to cart", () => {
+    render(<ItemDetails setCartItems={jest.fn} cartItems={cartItems} />);
+
+    const addToCartBtn = screen.getByRole("button", { name: /add-to-cart/i });
+    expect(addToCartBtn).toHaveTextContent(/add to cart/i);
     fireEvent.click(addToCartBtn);
 
-    const cartItem2 = screen.getByLabelText("cartItem").textContent;
-    expect(cartItem2).toEqual("1");
+    expect(addToCartBtn).toBeDisabled();
+    expect(addToCartBtn).toHaveTextContent(/adding to cart/i);
+  });
 
+  test("should enable button after adding to cart", async () => {
+    render(<ItemDetails setCartItems={jest.fn} cartItems={cartItems} />);
+
+    const addToCartBtn = screen.getByRole("button", { name: /add-to-cart/i });
+    expect(addToCartBtn).toHaveTextContent(/add to cart/i);
+    fireEvent.click(addToCartBtn);
+
+    expect(addToCartBtn).toBeDisabled();
+    expect(addToCartBtn).toHaveTextContent(/adding to cart/i);
+
+    // await waitFor(() => expect(addToCartBtn).not.toHaveTextContent(/adding to cart/i))
+
+    setTimeout(() => {
+      expect(addToCartBtn).toHaveTextContent("Add to cart");
+      expect(addToCartBtn).not.toBeDisabled();
+    }, 3000);
+  });
+
+  test("should increment cartItem by 1 when button is clicked", () => {
+    render(<Home />);
+
+    const cartItem = screen.getByLabelText("cartItem").textContent;
+    expect(cartItem).toEqual("0");
+
+    const addToCartBtn = screen.getByRole("button", { name: /add-to-cart/i });
+    fireEvent.click(addToCartBtn);
+
+    setTimeout(() => {
+      expect(cartItem).toEqual("1");
+    }, 3000);
   });
 });

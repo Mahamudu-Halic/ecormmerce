@@ -14,12 +14,17 @@ const ItemDetails = ({
 }) => {
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
+  const [adding, setAdding] = useState(false)
   const addToCart = () => {
+    setAdding(true)
     const newItem = { ...ItemInfo, size, color };
+    setTimeout(() => {
 
-    const items = [...cartItems, newItem];
-    sessionStorage.setItem("items", JSON.stringify(items));
-    setCartItems(items);
+      const items = [...cartItems, newItem];
+      sessionStorage.setItem("items", JSON.stringify(items));
+      setCartItems(items);
+      setAdding(false);
+    }, 3000)
   };
   return (
     <div className="flex-1 flex flex-col gap-3">
@@ -85,10 +90,11 @@ const ItemDetails = ({
           onClick={addToCart}
           className="md:text-base text-lg rounded-3xl w-full p-2 bg-[#f2f2f2] text-[#b8b6b6] hover:bg-black hover:text-white transition-all"
           aria-label="add-to-cart"
+          disabled={adding}
         >
-          Add To Cart
+          {adding ? "Adding to cart..." : "Add To Cart"}
         </button>
-        <button className="md:text-base text-lg rounded-3xl w-full p-2 bg-black text-white hover:bg-[#f2f2f2] hover:text-black transition-all">
+        <button disabled={adding} className="md:text-base text-lg rounded-3xl w-full p-2 bg-black text-white hover:bg-[#f2f2f2] hover:text-black transition-all">
           Checkout Now
         </button>
       </div>
